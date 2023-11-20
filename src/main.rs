@@ -1,5 +1,5 @@
 use std::io;
-#[derive(Debug)]
+// #[derive(Debug)]
 struct Position {
     x: char,
     y: u8,
@@ -73,8 +73,6 @@ fn move_piece(board: &ChessBoard, from: Position, to: Position) -> ChessBoard{
 
 fn print_board(board: &ChessBoard, whoistoplay: bool) {
     //TODO print board nicely with letters and numbers
-    //
-    println!("{:?}", board.board);
     if whoistoplay {
         println!("White to play");
     for i in (0..8).rev() {
