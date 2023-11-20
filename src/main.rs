@@ -51,15 +51,17 @@ if !move_validation(&board , &from, &to ) {
 }
 
 println!("your piece moves from {}{} to {}{}", from.x, from.y, to.x, to.y);
-// println!("your piece moves from {}{} to {}{}", position_to_index(&from).0, position_to_index(&from).1, position_to_index(&to).0, position_to_index(&to).1);
+println!("your piece moves from {}{} to {}{}", position_to_index(&from).x, position_to_index(&from).y, position_to_index(&to).x, position_to_index(&to).y);
 board = move_piece(&board, from, to);
 }
 
 }
 
 fn move_piece(board: &ChessBoard, from: Position, to: Position) -> ChessBoard{
-    let (from_x, from_y) = position_to_index(&from);
-    let (to_x, to_y) = position_to_index(&to);
+    let Index { x, y } = position_to_index(&from);
+    let (from_x, from_y) = (x, y);
+    let Index { x , y }= position_to_index(&to);
+    let (to_x, to_y) = (x, y);
     let mut new_board = board.board;
     new_board[to_y as usize][to_x as usize] = new_board[from_y as usize][from_x as usize];
     new_board[from_y as usize][from_x as usize] = ' ';
@@ -79,10 +81,13 @@ fn print_board(board: &ChessBoard) {
     }
 }
 
-fn position_to_index(position: &Position) -> (u8,u8) {
+fn position_to_index(position: &Position) -> (Index) {
     let x = position.x as u8 - 97;
     let y = position.y - 1;
-    return (x,y);
+    return Index {
+        x,
+        y,
+    };
 }
 
 
@@ -98,7 +103,7 @@ if from.x == to.x && from.y == to.y {
     return false;
 }
 //ckeck if from is not empty
-if board.board[position_to_index(&from).1 as usize][position_to_index(&from).0 as usize] == ' ' {
+if board.board[position_to_index(&from).y as usize][position_to_index(&from).x as usize] == ' ' {
     return false;
 }
 
