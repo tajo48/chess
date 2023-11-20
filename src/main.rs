@@ -35,26 +35,26 @@ let mut board = ChessBoard {
     ], 
 };
 
+let mut whoistoplay = true;
 
+    loop {
+        print_board(&board,whoistoplay);
+        let Move { from, to } = Move {
+            from: read_move(true),
+            to: read_move(false),
+        };
 
-loop {
-print_board(&board);
-let Move { from, to } = Move {
-    from: read_move(true),
-    to: read_move(false),
-};
+        //restart loop if move is invalid
+        if !move_validation(&board , &from, &to ,whoistoplay) {
+            println!("Invalid move");
+            continue;
+        }
 
-//restart loop if move is invalid
-if !move_validation(&board , &from, &to ) {
-    println!("Invalid move");
-    continue;
-}
-
-println!("your piece moves from {}{} to {}{}", from.x, from.y, to.x, to.y);
-println!("your piece moves from {}{} to {}{}", position_to_index(&from).x, position_to_index(&from).y, position_to_index(&to).x, position_to_index(&to).y);
-board = move_piece(&board, from, to);
-}
-
+        println!("your piece moves from {}{} to {}{}", from.x, from.y, to.x, to.y);
+        println!("your piece moves from {}{} to {}{}", position_to_index(&from).x, position_to_index(&from).y, position_to_index(&to).x, position_to_index(&to).y);
+        board = move_piece(&board, from, to);
+        whoistoplay = !whoistoplay;
+    }
 }
 
 fn move_piece(board: &ChessBoard, from: Position, to: Position) -> ChessBoard{
@@ -71,17 +71,29 @@ fn move_piece(board: &ChessBoard, from: Position, to: Position) -> ChessBoard{
 }
 
 
-fn print_board(board: &ChessBoard) {
+fn print_board(board: &ChessBoard, whoistoplay: bool) {
     //TODO print board nicely with letters and numbers
-    for i in 0..8 {
-        for j in 0..8 {
+    if whoistoplay {
+        println!("White to play");
+    for i in (0..8).rev() {
+        for j in (0..8).rev() {
             print!("{}", board.board[i][j]);
         }
         println!("");
     }
+    } else {
+        println!("Black to play");
+        for i in 0..8 {
+            for j in 0..8 {
+                print!("{}", board.board[i][j]);
+            }
+            println!("");
+        }
+    }
 }
 
 fn position_to_index(position: &Position) -> Index {
+//fn position_to_index(position: &Position, whoistoplay: bool) -> Index {
     let x = position.x as u8 - 97;
     let y = position.y - 1;
     return Index {
@@ -90,26 +102,27 @@ fn position_to_index(position: &Position) -> Index {
     };
 }
 
+fn move_validation(board: &ChessBoard, from: &Position,to: &Position, whoistoplay: bool) -> bool{
+        //check if from and to are not the same
+        if from.x == to.x && from.y == to.y {
+            return false;
+        }
+        //ckeck if from is not empty
+        if board.board[position_to_index(&from).y as usize][position_to_index(&from).x as usize] == ' ' {
+            return false;
+        }
+        //check if player is moving his own piece    
+        if whoistoplay {
+            if board.board[position_to_index(&from).y as usize][position_to_index(&from).x as usize].is_uppercase() {
+                return false;
+            }
+        } else {
+            if board.board[position_to_index(&from).y as usize][position_to_index(&from).x as usize].is_lowercase() {
+                return false;
+            }
+        }
 
-
-
-
-
-
-fn move_validation(board: &ChessBoard, from: &Position,to: &Position) -> bool
-{
-//check if from and to are not the same
-if from.x == to.x && from.y == to.y {
-    return false;
-}
-//ckeck if from is not empty
-if board.board[position_to_index(&from).y as usize][position_to_index(&from).x as usize] == ' ' {
-    return false;
-}
-
-
-
-return true;
+    return true;
 }
 
 fn read_move(fromorwhere: bool) -> Position {
