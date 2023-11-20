@@ -5,15 +5,39 @@ struct Position {
     y: u8,
 }
 
+struct Move {
+    from: Position,
+    to: Position,
+}
+// #[warn(dead_code)]
+// struct ChessBoard {
+//     board: [[char; 8]; 8],
+// }
 
 fn main() {
 println!("Welcome to Rust Chess!");
-//echo output from read_move_from
-let position = read_move(true);
-println!("You entered: {}{}", position.x, position.y);
+let Move { from , to } = Move { from: read_move(true), to: read_move(false)};
+
+println!("Your piece moves from {}{} to {}{}", from.x, from.y, to.x, to.y);
 }
 
+// fn print_board(board: ChessBoard) {
+//     for i in 0..8 {
+//         for j in 0..8 {
+//             print!("{}", board.board[i][j]);
+//         }
+//         println!("");
+//     }
+// }
 
+// fn move_validation(Move { from, to }: Move) -> bool
+// {
+//     //TODO check if move is valid
+//     //TODO check if piece is on from position
+//     //TODO check if piece is on to position
+//     //TODO check if piece can move to to position
+//     return true;
+// }
 
 fn read_move(fromorwhere: bool) -> Position {
     
