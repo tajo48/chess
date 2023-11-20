@@ -1,5 +1,5 @@
 use std::io;
-
+#[derive(Debug)]
 struct Position {
     x: char,
     y: u8,
@@ -50,8 +50,8 @@ let mut whoistoplay = true;
             continue;
         }
 
-        println!("your piece moves from {}{} to {}{}", from.x, from.y, to.x, to.y);
-        println!("your piece moves from {}{} to {}{}", position_to_index(&from).x, position_to_index(&from).y, position_to_index(&to).x, position_to_index(&to).y);
+        println!("from {}{} to {}{}", from.x, from.y, to.x, to.y);
+        println!("from {}{} to {}{}", position_to_index(&from).x, position_to_index(&from).y, position_to_index(&to).x, position_to_index(&to).y);
         board = move_piece(&board, from, to);
         whoistoplay = !whoistoplay;
     }
@@ -73,10 +73,12 @@ fn move_piece(board: &ChessBoard, from: Position, to: Position) -> ChessBoard{
 
 fn print_board(board: &ChessBoard, whoistoplay: bool) {
     //TODO print board nicely with letters and numbers
+    //
+    println!("{:?}", board.board);
     if whoistoplay {
         println!("White to play");
     for i in (0..8).rev() {
-        for j in (0..8).rev() {
+        for j in 0..8 {
             print!("{}", board.board[i][j]);
         }
         println!("");
@@ -84,7 +86,7 @@ fn print_board(board: &ChessBoard, whoistoplay: bool) {
     } else {
         println!("Black to play");
         for i in 0..8 {
-            for j in 0..8 {
+            for j in (0..8).rev() {
                 print!("{}", board.board[i][j]);
             }
             println!("");

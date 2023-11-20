@@ -1,0 +1,56 @@
+Welcome to Rust Chess!
+White to play
+RNBKQBNR
+PPPPPPPP
+        
+        
+        
+        
+pppppppp
+rnbkqbnr
+Print position of a piece you want to move: (e.g. a2)
+d2
+Print position where you want to move: (e.g. a2)
+d4
+your piece moves from d2 to d4
+your piece moves from 31 to 33
+Black to play
+rnbqkbnr
+ppp pppp
+        
+   p    
+        
+        
+PPPPPPPP
+RNBQKBNR
+Print position of a piece you want to move: (e.g. a2)
+d7
+Print position where you want to move: (e.g. a2)
+d5
+your piece moves from d7 to d5
+your piece moves from 36 to 34
+White to play
+RNBKQBNR
+PPPP PPP
+        
+    P   
+    p   
+        
+pppp ppp
+rnbkqbnr
+Print position of a piece you want to move: (e.g. a2)
+f1
+Print position where you want to move: (e.g. a2)
+c4
+your piece moves from f1 to c4
+your piece moves from 50 to 23
+Black to play
+rnbqk nr
+ppp pppp
+        
+  bp    
+   P    
+        
+PPP PPPP
+RNBQKBNR
+Print position of a piece you want to move: (e.g. a2)
