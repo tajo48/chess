@@ -14,11 +14,15 @@ struct ChessBoard {
     board: [[char; 8]; 8],
 }
 
+struct Index {
+    x: u8,
+    y: u8,
+}
 
 fn main() {
 println!("Welcome to Rust Chess!");
 
-let board = ChessBoard {
+let mut board = ChessBoard {
     board: [
         ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
         ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
@@ -31,26 +35,37 @@ let board = ChessBoard {
     ], 
 };
 
+
+
+loop {
+print_board(&board);
 let Move { from, to } = Move {
     from: read_move(true),
     to: read_move(false),
 };
+
+//restart loop if move is invalid
+if !move_validation(&board , &from, &to ) {
+    println!("Invalid move");
+    continue;
+}
+
 println!("your piece moves from {}{} to {}{}", from.x, from.y, to.x, to.y);
-println!("your piece moves from {}{} to {}{}", position_to_index(&from).0, position_to_index(&from).1, position_to_index(&to).0, position_to_index(&to).1);
-print_board(&board);
-move_piece(&board, from, to);
+// println!("your piece moves from {}{} to {}{}", position_to_index(&from).0, position_to_index(&from).1, position_to_index(&to).0, position_to_index(&to).1);
+board = move_piece(&board, from, to);
+}
 
 }
 
-fn move_piece(board: &ChessBoard, from: Position, to: Position){
+fn move_piece(board: &ChessBoard, from: Position, to: Position) -> ChessBoard{
     let (from_x, from_y) = position_to_index(&from);
     let (to_x, to_y) = position_to_index(&to);
     let mut new_board = board.board;
     new_board[to_y as usize][to_x as usize] = new_board[from_y as usize][from_x as usize];
     new_board[from_y as usize][from_x as usize] = ' ';
-    print_board(&ChessBoard {
+    return ChessBoard {
         board: new_board,
-    });
+    };
 }
 
 
@@ -76,29 +91,21 @@ fn position_to_index(position: &Position) -> (u8,u8) {
 
 
 
-
-// fn move_piece(mut board: ChessBoard, Move { from, to }: Move) -> ChessBoard {
-//     
-//     
-//     
-//     //TODO move piece from from to to
-//
-//     //TODO check if move is valid
-//     //TODO check if piece is on from position
-//     //TODO check if piece is on to position
-//     //TODO check if piece can move to to position
-//     return board;
-// }
+fn move_validation(board: &ChessBoard, from: &Position,to: &Position) -> bool
+{
+//check if from and to are not the same
+if from.x == to.x && from.y == to.y {
+    return false;
+}
+//ckeck if from is not empty
+if board.board[position_to_index(&from).1 as usize][position_to_index(&from).0 as usize] == ' ' {
+    return false;
+}
 
 
-// fn move_validation(Move { from, to }: Move) -> bool
-// {
-//     //TODO check if move is valid
-//     //TODO check if piece is on from position
-//     //TODO check if piece is on to position
-//     //TODO check if piece can move to to position
-//     return true;
-// }
+
+return true;
+}
 
 fn read_move(fromorwhere: bool) -> Position {
     
