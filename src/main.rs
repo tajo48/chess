@@ -9,45 +9,87 @@ struct Move {
     from: Position,
     to: Position,
 }
-// #[warn(dead_code)]
+
 struct ChessBoard {
     board: [[char; 8]; 8],
 }
 
+
 fn main() {
 println!("Welcome to Rust Chess!");
+
 let board = ChessBoard {
-    board: [['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
-            ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-            [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
-            ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
-            ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r']],
+    board: [
+        ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
+        ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+        ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
+    ], 
 };
-
-
-print_board(board);
 
 let Move { from, to } = Move {
     from: read_move(true),
     to: read_move(false),
 };
-println!("Your piece moves from {}{} to {}{}", from.x, from.y, to.x, to.y);
+println!("your piece moves from {}{} to {}{}", from.x, from.y, to.x, to.y);
+println!("your piece moves from {}{} to {}{}", position_to_index(&from).0, position_to_index(&from).1, position_to_index(&to).0, position_to_index(&to).1);
+print_board(&board);
+move_piece(&board, from, to);
+
 }
 
-fn print_board(board: ChessBoard) {
+fn move_piece(board: &ChessBoard, from: Position, to: Position){
+    let (from_x, from_y) = position_to_index(&from);
+    let (to_x, to_y) = position_to_index(&to);
+    let mut new_board = board.board;
+    new_board[to_y as usize][to_x as usize] = new_board[from_y as usize][from_x as usize];
+    new_board[from_y as usize][from_x as usize] = ' ';
+    print_board(&ChessBoard {
+        board: new_board,
+    });
+}
+
+
+fn print_board(board: &ChessBoard) {
     //TODO print board nicely with letters and numbers
-    println!("abcdefgh");
     for i in 0..8 {
         for j in 0..8 {
             print!("{}", board.board[i][j]);
         }
         println!("");
     }
-    println!("abcdefgh");
 }
+
+fn position_to_index(position: &Position) -> (u8,u8) {
+    let x = position.x as u8 - 97;
+    let y = position.y - 1;
+    return (x,y);
+}
+
+
+
+
+
+
+
+
+// fn move_piece(mut board: ChessBoard, Move { from, to }: Move) -> ChessBoard {
+//     
+//     
+//     
+//     //TODO move piece from from to to
+//
+//     //TODO check if move is valid
+//     //TODO check if piece is on from position
+//     //TODO check if piece is on to position
+//     //TODO check if piece can move to to position
+//     return board;
+// }
+
 
 // fn move_validation(Move { from, to }: Move) -> bool
 // {
