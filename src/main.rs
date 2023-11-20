@@ -59,12 +59,12 @@ board = move_piece(&board, from, to);
 
 fn move_piece(board: &ChessBoard, from: Position, to: Position) -> ChessBoard{
     let Index { x, y } = position_to_index(&from);
-    let (from_x, from_y) = (x, y);
+    let (from_x, from_y) = (x as usize, y as usize);
     let Index { x , y }= position_to_index(&to);
-    let (to_x, to_y) = (x, y);
+    let (to_x, to_y) = (x as usize, y as usize);
     let mut new_board = board.board;
-    new_board[to_y as usize][to_x as usize] = new_board[from_y as usize][from_x as usize];
-    new_board[from_y as usize][from_x as usize] = ' ';
+    new_board[to_y][to_x] = new_board[from_y][from_x];
+    new_board[from_y][from_x] = ' ';
     return ChessBoard {
         board: new_board,
     };
@@ -81,7 +81,7 @@ fn print_board(board: &ChessBoard) {
     }
 }
 
-fn position_to_index(position: &Position) -> (Index) {
+fn position_to_index(position: &Position) -> Index {
     let x = position.x as u8 - 97;
     let y = position.y - 1;
     return Index {
