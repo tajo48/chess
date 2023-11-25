@@ -51,16 +51,16 @@ let mut whoistoplay = true;
         }
 
         println!("from {}{} to {}{}", from.x, from.y, to.x, to.y);
-        println!("from {}{} to {}{}", position_to_index(&from).x, position_to_index(&from).y, position_to_index(&to).x, position_to_index(&to).y);
-        board = move_piece(&board, from, to);
+        println!("from {}{} to {}{}", position_to_index(&from,whoistoplay).x, position_to_index(&from, whoistoplay).y, position_to_index(&to, whoistoplay).x, position_to_index(&to, whoistoplay).y);
+        board = move_piece(&board, from, to,whoistoplay);
         whoistoplay = !whoistoplay;
     }
 }
 
-fn move_piece(board: &ChessBoard, from: Position, to: Position) -> ChessBoard{
-    let Index { x, y } = position_to_index(&from);
+fn move_piece(board: &ChessBoard, from: Position, to: Position,whoistoplay: bool) -> ChessBoard{
+    let Index { x, y } = position_to_index(&from, whoistoplay);
     let (from_x, from_y) = (x as usize, y as usize);
-    let Index { x , y }= position_to_index(&to);
+    let Index { x , y }= position_to_index(&to, whoistoplay);
     let (to_x, to_y) = (x as usize, y as usize);
     let mut new_board = board.board;
     new_board[to_y][to_x] = new_board[from_y][from_x];
@@ -92,14 +92,29 @@ fn print_board(board: &ChessBoard, whoistoplay: bool) {
     }
 }
 
-fn position_to_index(position: &Position) -> Index {
+fn position_to_index(position: &Position, whoistoplay: bool) -> Index {
 //fn position_to_index(position: &Position, whoistoplay: bool) -> Index {
-    let x = position.x as u8 - 97;
-    let y = position.y - 1;
-    return Index {
-        x,
-        y,
-    };
+    // let x = position.x as u8 - 97;
+    // let y = position.y - 1;
+    // return Index {
+    //     x,
+    //     y,
+    // };
+    if whoistoplay {
+        let x = position.x as u8 - 97;
+        let y = position.y - 1;
+        return Index {
+            x,
+            y,
+        };
+    } else {
+        let x = 7 - (position.x as u8 - 97);
+        let y = 7 - (position.y - 1);
+        return Index {
+            x,
+            y,
+        };
+    }
 }
 
 fn move_validation(board: &ChessBoard, from: &Position,to: &Position, whoistoplay: bool) -> bool{
@@ -108,16 +123,16 @@ fn move_validation(board: &ChessBoard, from: &Position,to: &Position, whoistopla
             return false;
         }
         //ckeck if from is not empty
-        if board.board[position_to_index(&from).y as usize][position_to_index(&from).x as usize] == ' ' {
+        if board.board[position_to_index(&from,whoistoplay).y as usize][position_to_index(&from,whoistoplay).x as usize] == ' ' {
             return false;
         }
         //check if player is moving his own piece    
         if whoistoplay {
-            if board.board[position_to_index(&from).y as usize][position_to_index(&from).x as usize].is_uppercase() {
+            if board.board[position_to_index(&from,whoistoplay).y as usize][position_to_index(&from,whoistoplay).x as usize].is_uppercase() {
                 return false;
             }
         } else {
-            if board.board[position_to_index(&from).y as usize][position_to_index(&from).x as usize].is_lowercase() {
+            if board.board[position_to_index(&from,whoistoplay).y as usize][position_to_index(&from,whoistoplay).x as usize].is_lowercase() {
                 return false;
             }
         }
