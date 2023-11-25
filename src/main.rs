@@ -76,19 +76,21 @@ fn print_board(board: &ChessBoard, whoistoplay: bool) {
     if whoistoplay {
         println!("White to play");
     for i in (0..8).rev() {
-        for j in 0..8 {
-            print!("{}", board.board[i][j]);
-        }
-        println!("");
+            for j in 0..8 {
+                print!("{}", board.board[i][j]);
+            }
+        println!("{}", i+1);
     }
-    } else {
-        println!("Black to play");
+        println!("ABCDEFGH");
+}else {
+    println!("Black to play");
         for i in 0..8 {
             for j in (0..8).rev() {
                 print!("{}", board.board[i][j]);
             }
-            println!("");
+        println!("{}", 8-(i));
         }
+        println!("ABCDEFGH");
     }
 }
 
@@ -191,3 +193,19 @@ fn read_move(fromorwhere: bool) -> Position {
         y: second_char, 
     };
 }
+//
+//
+// pub fn greeting(name: &str) -> String {
+//     format!("Hello {}!", name)
+// }
+//
+// #[cfg(test)]
+// mod tests {
+//     use super::*;
+//
+//     #[test]
+//     fn greeting_contains_name() {
+//         let result = greeting("Carol");
+//         assert!(result.contains("Carol"));
+//     }
+// }
