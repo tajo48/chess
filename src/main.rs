@@ -193,19 +193,38 @@ fn read_move(fromorwhere: bool) -> Position {
         y: second_char, 
     };
 }
-//
-//
-// pub fn greeting(name: &str) -> String {
-//     format!("Hello {}!", name)
-// }
-//
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
-//
-//     #[test]
-//     fn greeting_contains_name() {
-//         let result = greeting("Carol");
-//         assert!(result.contains("Carol"));
-//     }
-// }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+
+    #[test]
+    fn test_move_validation() {
+        let mut board = ChessBoard {
+            board: [
+                ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
+                ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+                [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+                ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
+            ],
+        };
+        assert_eq!(move_validation(&board, &Position { x: 'a', y: 1 }, &Position { x: 'a', y: 1 }, true), false); // cant move to same position
+        board = move_piece(&board, Position { x: 'a', y: 1 }, Position { x: 'a', y: 3 }, true);
+        assert_eq!(move_validation(&board, &Position { x: 'b', y: 2 }, &Position { x: 'b', y: 3 }, true), true); // can move pawn one square
+        board = move_piece(&board, Position { x: 'b', y: 2 }, Position { x: 'b', y: 3 }, true);
+        assert_eq!(move_validation(&board, &Position { x: 'b', y: 3 }, &Position { x: 'b', y: 4 }, true), true); // can move pawn one square
+        board = move_piece(&board, Position { x: 'b', y: 3 }, Position { x: 'b', y: 4 }, true);
+        assert_eq!(move_validation(&board, &Position { x: 'b', y: 4 }, &Position { x: 'b', y: 5 }, true), true); // can move pawn one square
+
+        assert_eq!(move_validation(&board, &Position { x: 'a', y: 1 }, &Position { x: 'a', y: 1 }, false), false); // cant move to same position
+        board = move_piece(&board, Position { x: 'a', y: 1 }, Position { x: 'a', y: 3 }, false);
+        assert_eq!(move_validation(&board, &Position { x: 'b', y: 2 }, &Position { x: 'b', y: 3 }, false), true); // can move pawn one square
+        board = move_piece(&board, Position { x: 'b', y: 2 }, Position { x: 'b', y: 3 }, false);
+        assert_eq!(move_validation(&board, &Position { x: 'b', y: 3 }, &Position { x: 'b', y: 4 }, false), true); // can move pawn one square
+    }}
